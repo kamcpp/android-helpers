@@ -1,139 +1,125 @@
 package org.labcrypto.android.helpers;
 
+
+import android.graphics.PointF;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.Date;
+
 public class TouchHelper {
 
-    public interface TouchListener {
-        void onTouch(TouchEvent touchEvent);
-    }
-
-    public interface RightToLeftTouchListener extends TouchListener {
-    }
-
-    public interface LeftToRightTouchListener extends TouchListener {
-    }
-
-    public interface TopToBottomTouchListener extends TouchListener {
-    }
-
-    public interface BottomToTopTouchListener extends TouchListener {
-    }
-
-    public interface UnknownDirectionTouchListener extends TouchListener {
+    public interface TouchHandler {
+        void handle(TouchEvent touchEvent);
     }
 
     public static class TouchEvent {
+        public float dx;
+        public float dy;
+        public float dt;
+        public float r;
+    }
 
-        private float dx;
-        private float dy;
-        private int duration;
+    public static class Builder {
 
-        public TouchEvent(float dx, float dy, int duration) {
-            this.dx = dx;
-            this.dy = dy;
-            this.duration = duration;
+        public View view;
+        public TouchHandler upHandler;
+        public TouchHandler rightHandler;
+        public TouchHandler downHandler;
+        public TouchHandler leftHandler;
+        public TouchHandler unknownHandler;
+
+        public Builder(View view) {
+            this.view = view;
         }
 
-        public float getDx() {
-            return dx;
+        public Builder setUpHandler(final TouchHandler upHandler) {
+            this.upHandler = upHandler;
+            return this;
         }
 
-        public void setDx(float dx) {
-            this.dx = dx;
+        public Builder setRightHandler(final TouchHandler rightHandler) {
+            this.rightHandler = rightHandler;
+            return this;
         }
 
-        public float getDy() {
-            return dy;
+        public Builder setDownHandler(final TouchHandler downHandler) {
+            this.downHandler = downHandler;
+            return this;
         }
 
-        public void setDy(float dy) {
-            this.dy = dy;
+        public Builder setLeftHandler(final TouchHandler leftHandler) {
+            this.leftHandler = leftHandler;
+            return this;
         }
 
-        public int getDuration() {
-            return duration;
+        public Builder setUnKnownHandler(final TouchHandler unknownHandler) {
+            this.unknownHandler = unknownHandler;
+            return this;
         }
 
-        public void setDuration(int duration) {
-            this.duration = duration;
+        public TouchHelper assign() {
+            view.setOnTouchListener(new View.OnTouchListener() {
+
+                private long downTime;
+                private PointF downPoint;
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            downTime = new Date().getTime();
+                            downPoint = new PointF(event.getX(), event.getY());
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            if (downPoint != null) {
+                                TouchEvent touchEvent = new TouchEvent();
+                                touchEvent.dx = event.getX() - downPoint.x;
+                                touchEvent.dy = event.getY() - downPoint.y;
+                                touchEvent.dt = new Date().getTime() - downTime;
+                                touchEvent.r = Math.abs(touchEvent.dy / touchEvent.dx);
+                                downPoint = null;
+
+
+                                if (touchEvent.r < 0.4) {
+                                    if (touchEvent.dx > 0) {
+                                        if (rightHandler != null) {
+                                            rightHandler.handle(touchEvent);
+                                        }
+                                    } else {
+                                        if (leftHandler != null) {
+                                            leftHandler.handle(touchEvent);
+                                        }
+                                    }
+                                } else if (touchEvent.r > 3.0) {
+                                    if (touchEvent.dy > 0) {
+                                        if (downHandler != null) {
+                                            downHandler.handle(touchEvent);
+                                        }
+                                    } else {
+                                        if (upHandler != null) {
+                                            upHandler.handle(touchEvent);
+                                        }
+                                    }
+                                } else {
+                                    if (unknownHandler != null) {
+                                        unknownHandler.handle(touchEvent);
+                                    }
+                                }
+
+
+                            }
+
+                    }
+
+                    return true;
+                }
+            });
+
+            return null;
         }
-
-        public float getRatio() {
-            return dy / dx;
-        }
-    }
-
-    private View view;
-    private RightToLeftTouchListener rightToLeftTouchListener;
-    private LeftToRightTouchListener leftToRightTouchListener;
-    private TopToBottomTouchListener topToBottomTouchListener;
-    private BottomToTopTouchListener bottomToTopTouchListener;
-    private UnknownDirectionTouchListener unknownDirectionTouchListener;
-
-    public View getView() {
-        return view;
-    }
-
-    public TouchHelper setView(View view) {
-        this.view = view;
-        return this;
-    }
-
-    public RightToLeftTouchListener getRightToLeftTouchListener() {
-        return rightToLeftTouchListener;
-    }
-
-    public TouchHelper setRightToLeftTouchListener(RightToLeftTouchListener rightToLeftTouchListener) {
-        this.rightToLeftTouchListener = rightToLeftTouchListener;
-        return this;
-    }
-
-    public LeftToRightTouchListener getLeftToRightTouchListener() {
-        return leftToRightTouchListener;
-    }
-
-    public TouchHelper setLeftToRightTouchListener(LeftToRightTouchListener leftToRightTouchListener) {
-        this.leftToRightTouchListener = leftToRightTouchListener;
-        return this;
-    }
-
-    public TopToBottomTouchListener getTopToBottomTouchListener() {
-        return topToBottomTouchListener;
-    }
-
-    public TouchHelper setTopToBottomTouchListener(TopToBottomTouchListener topToBottomTouchListener) {
-        this.topToBottomTouchListener = topToBottomTouchListener;
-        return this;
-    }
-
-    public BottomToTopTouchListener getBottomToTopTouchListener() {
-        return bottomToTopTouchListener;
-    }
-
-    public TouchHelper setBottomToTopTouchListener(BottomToTopTouchListener bottomToTopTouchListener) {
-        this.bottomToTopTouchListener = bottomToTopTouchListener;
-        return this;
-    }
-
-    public UnknownDirectionTouchListener getUnknownDirectionTouchListener() {
-        return unknownDirectionTouchListener;
-    }
-
-    public TouchHelper setUnknownDirectionTouchListener(UnknownDirectionTouchListener unknownDirectionTouchListener) {
-        this.unknownDirectionTouchListener = unknownDirectionTouchListener;
-        return this;
-    }
-
-    public void assign() {
-        view.setOnTouchListener(new View.OnTouchListener() {
-            // TODO
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // TODO
-                return false;
-            }
-        });
     }
 }
