@@ -1,7 +1,7 @@
-## Wideroid; Android Helper for Wide People
+## Wideroid; Android Development Helpers
 
 ### Synopsis
-A bunch of helpers and annotations to help you write less, produce more and become wider. 
+A bunch of helpers and annotations to help you write less, produce more.
 
 ### Contributers
 
