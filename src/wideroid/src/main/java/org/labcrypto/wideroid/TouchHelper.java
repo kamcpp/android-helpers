@@ -29,114 +29,181 @@ import java.util.Date;
 
 /**
  * @author Kamran Amini  <kam.cpp@gmail.com>
- * @uathor Mohammad Ghorbani  <???>
+ * @author Mohammad Ghorbani  <???>
  */
 public class TouchHelper {
 
-    public interface TouchHandler {
+    /**
+     * Static method for creating a new TouchHelper instance.
+     */
+    public static TouchHelper createTouchHelper() {
+        return new TouchHelper();
+    }
+
+    /**
+     * Listener for events caused by touches from up to down.
+     */
+    public interface UpToDownTouchListener {
         void handle(TouchEvent touchEvent);
     }
 
-    public static class TouchEvent {
+    /**
+     * Listener for events caused by touches from down to up.
+     */
+    public interface DownToUpTouchListener {
+        void handle(TouchEvent touchEvent);
+    }
+
+    /**
+     * Listener for events caused by touches from left to right.
+     */
+    public interface LeftToRightTouchListener {
+        void handle(TouchEvent touchEvent);
+    }
+
+    /**
+     * Listener for events caused by touches from right to left.
+     */
+    public interface RightToLeftTouchListener {
+        void handle(TouchEvent touchEvent);
+    }
+
+    /**
+     * Listener for events caused by touches with unknown directional pattern.
+     */
+    public interface UnknownDirectionTouchListener {
+        void handle(TouchEvent touchEvent);
+    }
+
+    /**
+     * Event object propagated when a touch happens.
+     */
+    public class TouchEvent {
         public float dx;
         public float dy;
         public float dt;
         public float r;
     }
 
-    public static class Builder {
+    /**
+     * 
+     */
+    protected View view;
+    protected UpToDownTouchListener upToDownTouchListener;
+    protected DownToUpTouchListener downToUpTouchListener;
+    protected LeftToRightTouchListener leftToRightTouchListener;
+    protected RightToLeftTouchListener rightToLeftTouchListener;
+    protected UnknownDirectionTouchListener unknownDirectionTouchListener;
 
-        public View view;
-        public TouchHandler upHandler;
-        public TouchHandler rightHandler;
-        public TouchHandler downHandler;
-        public TouchHandler leftHandler;
-        public TouchHandler unknownHandler;
 
-        public Builder(View view) {
-            this.view = view;
-        }
+    public View getView() {
+        return view;
+    }
 
-        public Builder setUpHandler(final TouchHandler upHandler) {
-            this.upHandler = upHandler;
-            return this;
-        }
+    public TouchHelper setView(View view) {
+        this.view = view;
+        return this;
+    }
 
-        public Builder setRightHandler(final TouchHandler rightHandler) {
-            this.rightHandler = rightHandler;
-            return this;
-        }
+    public UpToDownTouchListener getUpToDownTouchListener() {
+        return upToDownTouchListener;
+    }
 
-        public Builder setDownHandler(final TouchHandler downHandler) {
-            this.downHandler = downHandler;
-            return this;
-        }
+    public TouchHelper setUpToDownTouchListener(UpToDownTouchListener upToDownTouchListener) {
+        this.upToDownTouchListener = upToDownTouchListener;
+        return this;
+    }
 
-        public Builder setLeftHandler(final TouchHandler leftHandler) {
-            this.leftHandler = leftHandler;
-            return this;
-        }
+    public DownToUpTouchListener getDownToUpTouchListener() {
+        return downToUpTouchListener;
+    }
 
-        public Builder setUnKnownHandler(final TouchHandler unknownHandler) {
-            this.unknownHandler = unknownHandler;
-            return this;
-        }
+    public TouchHelper setDownToUpTouchListener(DownToUpTouchListener downToUpTouchListener) {
+        this.downToUpTouchListener = downToUpTouchListener;
+        return this;
+    }
 
-        public TouchHelper assign() {
-            view.setOnTouchListener(new View.OnTouchListener() {
+    public LeftToRightTouchListener getLeftToRightTouchListener() {
+        return leftToRightTouchListener;
+    }
 
-                private long downTime;
-                private PointF downPoint;
+    public TouchHelper setLeftToRightTouchListener(LeftToRightTouchListener leftToRightTouchListener) {
+        this.leftToRightTouchListener = leftToRightTouchListener;
+        return this;
+    }
 
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
+    public RightToLeftTouchListener getRightToLeftTouchListener() {
+        return rightToLeftTouchListener;
+    }
 
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            downTime = new Date().getTime();
-                            downPoint = new PointF(event.getX(), event.getY());
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            if (downPoint != null) {
-                                TouchEvent touchEvent = new TouchEvent();
-                                touchEvent.dx = event.getX() - downPoint.x;
-                                touchEvent.dy = event.getY() - downPoint.y;
-                                touchEvent.dt = new Date().getTime() - downTime;
-                                touchEvent.r = Math.abs(touchEvent.dy / touchEvent.dx);
-                                downPoint = null;
-                                if (touchEvent.r < 0.4) {
-                                    if (touchEvent.dx > 0) {
-                                        if (rightHandler != null) {
-                                            rightHandler.handle(touchEvent);
-                                        }
-                                    } else {
-                                        if (leftHandler != null) {
-                                            leftHandler.handle(touchEvent);
-                                        }
-                                    }
-                                } else if (touchEvent.r > 3.0) {
-                                    if (touchEvent.dy > 0) {
-                                        if (downHandler != null) {
-                                            downHandler.handle(touchEvent);
-                                        }
-                                    } else {
-                                        if (upHandler != null) {
-                                            upHandler.handle(touchEvent);
-                                        }
+    public TouchHelper setRightToLeftTouchListener(RightToLeftTouchListener rightToLeftTouchListener) {
+        this.rightToLeftTouchListener = rightToLeftTouchListener;
+        return this;
+    }
+
+    public UnknownDirectionTouchListener getUnknownDirectionTouchListener() {
+        return unknownDirectionTouchListener;
+    }
+
+    public TouchHelper setUnknownDirectionTouchListener(UnknownDirectionTouchListener unknownDirectionTouchListener) {
+        this.unknownDirectionTouchListener = unknownDirectionTouchListener;
+        return this;
+    }
+
+    public void assign() {
+        view.setOnTouchListener(new View.OnTouchListener() {
+
+            private long downTime;
+            private PointF downPoint;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        downTime = new Date().getTime();
+                        downPoint = new PointF(event.getX(), event.getY());
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (downPoint != null) {
+                            TouchEvent touchEvent = new TouchEvent();
+                            touchEvent.dx = event.getX() - downPoint.x;
+                            touchEvent.dy = event.getY() - downPoint.y;
+                            touchEvent.dt = new Date().getTime() - downTime;
+                            touchEvent.r = Math.abs(touchEvent.dy / touchEvent.dx);
+                            downPoint = null;
+                            if (touchEvent.r < 0.4) {
+                                if (touchEvent.dx > 0) {
+                                    if (leftToRightTouchListener != null) {
+                                        leftToRightTouchListener.handle(touchEvent);
                                     }
                                 } else {
-                                    if (unknownHandler != null) {
-                                        unknownHandler.handle(touchEvent);
+                                    if (rightToLeftTouchListener != null) {
+                                        rightToLeftTouchListener.handle(touchEvent);
                                     }
                                 }
+                            } else if (touchEvent.r > 3.0) {
+                                if (touchEvent.dy > 0) {
+                                    if (upToDownTouchListener != null) {
+                                        upToDownTouchListener.handle(touchEvent);
+                                    }
+                                } else {
+                                    if (downToUpTouchListener != null) {
+                                        downToUpTouchListener.handle(touchEvent);
+                                    }
+                                }
+                            } else {
+                                if (unknownDirectionTouchListener != null) {
+                                    unknownDirectionTouchListener.handle(touchEvent);
+                                }
                             }
-                    }
-                    return true;
+                        }
+                        break;
                 }
-            });
-            return null;
-        }
+                return true;
+            }
+        });
     }
 }
