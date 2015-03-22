@@ -86,70 +86,136 @@ public class TouchHelper {
     }
 
     /**
-     * 
+     * Target view which should be monitored for touch events.
      */
     protected View view;
+    /**
+     * Listener reference for up to down touch events.
+     */
     protected UpToDownTouchListener upToDownTouchListener;
+    /**
+     * Listener reference for down to up touch events.
+     */
     protected DownToUpTouchListener downToUpTouchListener;
+    /**
+     * Listener reference for left to right touch events.
+     */
     protected LeftToRightTouchListener leftToRightTouchListener;
+    /**
+     * Listener reference for right to left touch events.
+     */
     protected RightToLeftTouchListener rightToLeftTouchListener;
+    /**
+     * Listener reference for unknown touch events.
+     */
     protected UnknownDirectionTouchListener unknownDirectionTouchListener;
 
-
+    /**
+     * Returns target view.
+     */
     public View getView() {
         return view;
     }
 
+    /**
+     * Sets target view.
+     *
+     * @return Reference to this touch helper object.
+     */
     public TouchHelper setView(View view) {
         this.view = view;
         return this;
     }
 
+    /**
+     * Returns up to down listener.
+     */
     public UpToDownTouchListener getUpToDownTouchListener() {
         return upToDownTouchListener;
     }
 
+    /**
+     * Sets up to down listener.
+     *
+     * @return Reference to this touch helper object.
+     */
     public TouchHelper setUpToDownTouchListener(UpToDownTouchListener upToDownTouchListener) {
         this.upToDownTouchListener = upToDownTouchListener;
         return this;
     }
 
+    /**
+     * Returns down to up listener.
+     */
     public DownToUpTouchListener getDownToUpTouchListener() {
         return downToUpTouchListener;
     }
 
+    /**
+     * Sets down to up listener.
+     *
+     * @return Reference to this touch helper object.
+     */
     public TouchHelper setDownToUpTouchListener(DownToUpTouchListener downToUpTouchListener) {
         this.downToUpTouchListener = downToUpTouchListener;
         return this;
     }
 
+    /**
+     * Returns left to right listener.
+     */
     public LeftToRightTouchListener getLeftToRightTouchListener() {
         return leftToRightTouchListener;
     }
 
+    /**
+     * Sets left to right listener.
+     *
+     * @return Reference to this touch helper object.
+     */
     public TouchHelper setLeftToRightTouchListener(LeftToRightTouchListener leftToRightTouchListener) {
         this.leftToRightTouchListener = leftToRightTouchListener;
         return this;
     }
 
+    /**
+     * Returns right to left listener.
+     */
     public RightToLeftTouchListener getRightToLeftTouchListener() {
         return rightToLeftTouchListener;
     }
 
+    /**
+     * Sets right to left listener.
+     *
+     * @return Reference to this touch helper object.
+     */
     public TouchHelper setRightToLeftTouchListener(RightToLeftTouchListener rightToLeftTouchListener) {
         this.rightToLeftTouchListener = rightToLeftTouchListener;
         return this;
     }
 
+    /**
+     * Returns unknown touch listener.
+     */
     public UnknownDirectionTouchListener getUnknownDirectionTouchListener() {
         return unknownDirectionTouchListener;
     }
 
+    /**
+     * Sets unknown touch listener.
+     *
+     * @return Reference to this touch helper object.
+     */
     public TouchHelper setUnknownDirectionTouchListener(UnknownDirectionTouchListener unknownDirectionTouchListener) {
         this.unknownDirectionTouchListener = unknownDirectionTouchListener;
         return this;
     }
 
+    /**
+     * Attaches to target view for monitoring touch events and assigns the listeners.
+     * This method should be called at last in the method call chains.
+     */
     public void assign() {
         view.setOnTouchListener(new View.OnTouchListener() {
 
