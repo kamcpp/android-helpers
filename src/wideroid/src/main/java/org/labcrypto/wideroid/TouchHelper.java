@@ -29,7 +29,7 @@ import java.util.Date;
 
 /**
  * @author Kamran Amini  <kam.cpp@gmail.com>
- * @author Mohammad Ghorbani  <???>
+ * @author Mohammad Ghorbani  <mohammad.68.gh@gmail.com>
  */
 public class TouchHelper {
 
