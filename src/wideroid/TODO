@@ -1,0 +1,2 @@
+- Download directly to an output stream for big downloads. [TODO]
+- Access to byte arrays behind a downloaded file or a downloaded string. [TODO]
