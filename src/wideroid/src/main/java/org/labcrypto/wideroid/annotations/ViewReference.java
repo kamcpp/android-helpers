@@ -33,5 +33,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ViewReference {
 
-    String id() default "";
+    String viewId() default "";
 }

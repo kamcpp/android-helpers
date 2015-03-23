@@ -7,3 +7,5 @@ Version 1.2:
   - Touch Helper has been added.
   - Download Helper has been added.
   - License changed to Apache License Version 2.0 .
+  - ViewReference annotation has been added.
+  - Wideroid class can now process ViewReference annotation in activities.
