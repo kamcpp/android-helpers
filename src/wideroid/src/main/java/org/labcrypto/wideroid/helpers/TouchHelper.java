@@ -17,7 +17,7 @@
 
  */
 
-package org.labcrypto.wideroid;
+package org.labcrypto.wideroid.helpers;
 
 import android.graphics.PointF;
 import android.view.MotionEvent;

@@ -17,7 +17,7 @@
 
  */
 
-package org.labcrypto.wideroid;
+package org.labcrypto.wideroid.helpers;
 
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
