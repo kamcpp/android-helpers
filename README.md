@@ -1,4 +1,4 @@
-## Wideroid; Android Development Helpers
+## Wideroid Android Helper Framework
 
 ### Synopsis
 A bunch of helpers and annotations to help you write less and do more in Android development.
