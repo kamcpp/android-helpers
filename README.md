@@ -1,7 +1,7 @@
 ## Wideroid Android Helper Framework
 
 ### Synopsis
-A bunch of helpers and annotations to help you write less and do more in Android development.
+A bunch of helpers and annotations to help you write less and do more, mainly designed to be used in Android development.
 
 ### Contributors
 1. [Kamran Amini](https://github.com/kamcpp)
