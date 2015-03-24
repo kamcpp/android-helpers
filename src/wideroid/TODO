@@ -4,3 +4,5 @@
 - ViewReference annotation [DONE]
 - ViewReference Processing [TODO]
 - Wideroid Activity base class [TODO]
+- OnClick annotation [TODO]
+- Validating type of fields which they are receiving the annotations [TODO]
