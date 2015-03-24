@@ -31,6 +31,32 @@ public class MainActivity extends Activity {
   }
 }
 ```
+#### OnClick Annotation
+
+```Java
+public class MainActivity extends Activity {
+  
+  @OnClick(methodName = "changeText")
+  @ViewReference(viewId = "buttonChangeText")
+  private Button changeTextButton;
+  
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.main);
+    Wideroid.processActivity(this);
+  }
+  
+  public void changeText(View view) {
+    textViewHelloWorld.setText("Text Changed!");
+  }
+  
+  @OnClick(viewId = "buttonMakeToastMessage")
+  public void makeToastMessage(View view) {
+    Toast.makeText(this, "Hello World from Toast ...", Toast.LENGTH_LONG).show();
+  }
+}
+```
 
 ### Contributors
 1. [Kamran Amini](https://github.com/kamcpp)
