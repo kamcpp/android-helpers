@@ -3,6 +3,35 @@
 ### Synopsis
 A bunch of helpers and annotations to help you write less and do more, mainly designed to be used in Android development.
 
+### Quick Start
+
+#### ViewReference Annotation
+
+```Java
+public class MainActivity extends Activity {
+  
+  @ViewReference
+  private TextView textViewHelloWorld;
+  
+  @ViewReference(viewId = "buttonOK")
+  private Button buttonChangeText;
+  
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.main);
+    Wideroid.processActivity(this);
+    
+    buttonChangeText.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        textViewHelloWorld.setText("Text Changed!");
+      }
+    }
+  }
+}
+```
+
 ### Contributors
 1. [Kamran Amini](https://github.com/kamcpp)
 
